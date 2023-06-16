@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import {Delete} from '@mui/icons-material';
 import {RequestStatusType} from "../../../app/app-reducer";
 import useTodolist from "./hook/useTodolist";
+import styles from "./Todolist.module.css"
 
 type PropsType = {
     id: string
@@ -42,50 +43,19 @@ export const Todolist = React.memo(function (props: PropsType) {
         props.changeTodolistTitle,
         props.changeFilter,
         props.tasks,
-        props.filter)
-
-    // const addTask = useCallback((title: string) => {
-    //     props.addTask(title, props.id)
-    // }, [props.addTask, props.id])
-    //
-    // const removeTodolist = () => {
-    //     props.removeTodolist(props.id)
-    // }
-    // const changeTodolistTitle = useCallback((title: string) => {
-    //     props.changeTodolistTitle(props.id, title)
-    // }, [props.id, props.changeTodolistTitle])
-    //
-    // const onAllClickHandler = useCallback(() => props.changeFilter('all', props.id), [props.id, props.changeFilter])
-    // const onActiveClickHandler = useCallback(() => props.changeFilter('active', props.id), [props.id, props.changeFilter])
-    // const onCompletedClickHandler = useCallback(() => props.changeFilter('completed', props.id), [props.id, props.changeFilter])
-    //
-    //
-    // let tasksForTodolist = props.tasks
-    //
-    // if (props.filter === 'active') {
-    //     tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.New)
-    // }
-    // if (props.filter === 'completed') {
-    //     tasksForTodolist = props.tasks.filter(t => t.status === TaskStatuses.Completed)
-    // }
+        props.filter
+    )
 
     return <div>
-        <div style={{
-            display: "flex",
-            height: "30px",
-            alignItems: "center",
-            fontWeight: "bold",
-            fontSize: "20px",
-            margin: "15px 0"
-        }}>
+        <div className={styles.todolist}>
 
             <IconButton disabled={props.entityStatus === "loading"} onClick={removeTodolist} color={"error"}>
                 <Delete/>
             </IconButton>
-            <EditableSpan disabled={props.entityStatus === "loading"} value={props.title}
+            <EditableSpan disabled={props.entityStatus === "loading"}
+                          value={props.title}
                           onChange={changeTodolistTitle}/>
         </div>
-
 
         <AddItemForm disabled={props.entityStatus === "loading"} addItem={addTask}/>
         <div>
@@ -100,7 +70,7 @@ export const Todolist = React.memo(function (props: PropsType) {
                 />)
             }
         </div>
-        <div style={{paddingTop: '10px', display: "flex", justifyContent: "center"}}>
+        <div className={styles.buttonGroup}>
             <Button variant={props.filter === 'all' ? 'outlined' : 'text'}
                     onClick={onAllClickHandler}
                     color={'inherit'}
