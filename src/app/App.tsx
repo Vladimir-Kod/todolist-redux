@@ -1,10 +1,6 @@
 import React, {useEffect} from 'react'
 import './App.css'
 import { TodolistsList } from '../features/TodolistsList/TodolistsList'
-
-// You can learn about the difference by reading this guide on minimizing bundle size.
-// https://mui.com/guides/minimizing-bundle-size/
-// import { AppBar, Button, Container, IconButton, Toolbar, Typography } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -23,6 +19,7 @@ import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 
 
 function App() {
+
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
     const isInitialized = useAppSelector<boolean>(state => state.app.isInitialized)
     const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
@@ -30,49 +27,41 @@ function App() {
 
     const logOut = () => {
         dispatch(logOutTC())
-
     }
 
     useEffect(()=> {
         dispatch(authMeTC())
-
     },[])
 
     if (!isInitialized){
         return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
         <CircularProgress size={200} />
-
         </div>
     }
-
-
-
 
     return (
         <div className="App">
             <AppBar color={'inherit'} position="static" sx={{paddingRight: "30px"}}>
                 <Toolbar style={{display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
-                    {/*<IconButton edge="start" color="inherit" aria-label="menu">*/}
-                    {/*    /!*<Menu/>*!/*/}
-                    {/*</IconButton>*/}
                     <Typography variant="h6" color={"black"}>
                         <p style={{fontWeight: "bold"}}>MY TODOLIST</p>
                     </Typography>
 
                      {isLoggedIn && <Button  color="inherit" onClick={logOut}><LogoutTwoToneIcon /></Button>}
 
-
                 </Toolbar>
             </AppBar>
+
             {status === "loading" && <LinearProgress />}
+
             <Container fixed>
+
                 <Routes>
                     <Route path={'/'} element={ <TodolistsList status={status}/> }/>
                     <Route path={'/login'} element={ <Login/> }/>
                     <Route path={'404'} element={<h1>404: PAGE IS NOT FOUND </h1>}/>
                     <Route path={'*'} element={ <Navigate to={'404'} />}/>
                 </Routes>
-
 
             </Container>
             <ErrorSnackbar/>
@@ -81,3 +70,34 @@ function App() {
 }
 
 export default App
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

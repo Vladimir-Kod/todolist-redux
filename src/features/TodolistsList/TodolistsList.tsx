@@ -1,84 +1,38 @@
-import React, {useCallback, useEffect} from 'react'
-import {useAppDispatch, useAppSelector} from '../../app/store'
-import {
-    addTodolistTC,
-    changeTodolistFilterAC,
-    changeTodolistTitleTC,
-    fetchTodolistsTC,
-    FilterValuesType,
-    removeTodolistTC,
-    TodolistDomainType
-} from './todolists-reducer'
-import {
-    addTaskTC,
-    removeTaskTC,
-    TasksStateType,
-    updateTaskTC
-} from './tasks-reducer'
-import {TaskStatuses} from '../../api/todolists-api'
+import React, {useEffect} from 'react'
+import {fetchTodolistsTC} from './todolists-reducer'
 import {AddItemForm} from '../../components/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
-
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {RequestStatusType} from "../../app/app-reducer";
 import {Navigate} from "react-router-dom";
+import useTodolistList from "./hook/useTodolistList";
+import styles from "./TodolistsList.module.css"
 
 type TodolistsListType = {
     status: RequestStatusType
 }
-export const TodolistsList: React.FC<TodolistsListType> = (props) => {
+export const TodolistsList: React.FC<TodolistsListType> = () => {
 
-    const todolists = useAppSelector<Array<TodolistDomainType>>(state => state.todolists)
-    const tasks = useAppSelector<TasksStateType>(state => state.tasks)
-    const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
-    const addTodolistStatus = useAppSelector<RequestStatusType>(state => state.app.addTodoListStatus)
-    const dispatch = useAppDispatch()
+    const {
+        isLoggedIn,
+        dispatch,
+        addTodolistStatus,
+        tasks,
+        todolists,
+        removeTask,
+        addTask,
+        changeStatus,
+        changeTaskTitle,
+        changeFilter,
+        removeTodolist,
+        changeTodolistTitle,
+        addTodolist
+    } = useTodolistList()
 
     useEffect(() => {
         if(!isLoggedIn){return}
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
-    }, [])
-
-    const removeTask = useCallback(function (id: string, todolistId: string) {
-        const thunk = removeTaskTC(id, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const addTask = useCallback(function (title: string, todolistId: string) {
-        const thunk = addTaskTC(title, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const thunk = updateTaskTC(id, {status}, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const thunk = updateTaskTC(id, {title: newTitle}, todolistId)
-        dispatch(thunk)
-    }, [])
-
-    const changeFilter = useCallback(function (value: FilterValuesType, todolistId: string) {
-        const action = changeTodolistFilterAC(todolistId, value)
-        dispatch(action)
-    }, [])
-
-    const removeTodolist = useCallback(function (id: string) {
-        const thunk = removeTodolistTC(id)
-        dispatch(thunk)
-    }, [])
-
-    const changeTodolistTitle = useCallback(function (id: string, title: string) {
-        const thunk = changeTodolistTitleTC(id, title)
-        dispatch(thunk)
-    }, [])
-
-    const addTodolist = useCallback((title: string) => {
-        const thunk = addTodolistTC(title)
-        dispatch(thunk)
+        dispatch(fetchTodolistsTC())
     }, [])
 
     if (!isLoggedIn) {
@@ -86,9 +40,8 @@ export const TodolistsList: React.FC<TodolistsListType> = (props) => {
     }
 
     return <>
-        <Grid container style={{padding: '20px 0'}}>
-            <Paper elevation={12}
-                   style={{padding: '10px',borderRadius: "15px", border: "4px solid", borderColor: "lightblue"}}>
+        <Grid container className={styles.gridContainer}>
+            <Paper elevation={12} className={styles.AddItemFormPaper} >
                 <AddItemForm disabled={addTodolistStatus === "loading"} addItem={addTodolist}/>
             </Paper>
 
@@ -99,9 +52,7 @@ export const TodolistsList: React.FC<TodolistsListType> = (props) => {
                     let allTodolistTasks = tasks[tl.id]
 
                     return <Grid item key={tl.id}>
-                        <Paper elevation={12}
-                               style={{opacity: "0.95",
-                                   padding: '10px',borderRadius: "15px", border: "4px solid", borderColor: "coral"}}>
+                        <Paper elevation={12} className={styles.TodolistPaper}>
                             <Todolist
                                 id={tl.id}
                                 entityStatus={tl.entityStatus}

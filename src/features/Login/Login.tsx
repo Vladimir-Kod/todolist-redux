@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import {useFormik} from 'formik';
 import {useAppDispatch, useAppSelector} from "../../app/store";
 import {loginTC} from "./Login-auth-reducer";
-import {Navigate, Route} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import Paper from '@mui/material/Paper';
 
 
