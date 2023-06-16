@@ -17,7 +17,6 @@ import {authMeTC, logOutTC} from "../features/Login/Login-auth-reducer";
 import CircularProgress from "@mui/material/CircularProgress";
 import LogoutTwoToneIcon from '@mui/icons-material/LogoutTwoTone';
 
-
 function App() {
 
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
@@ -34,7 +33,7 @@ function App() {
     },[])
 
     if (!isInitialized){
-        return <div style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+        return <div className="AppCircularProgress">
         <CircularProgress size={200} />
         </div>
     }
@@ -42,9 +41,10 @@ function App() {
     return (
         <div className="App">
             <AppBar color={'inherit'} position="static" sx={{paddingRight: "30px"}}>
-                <Toolbar style={{display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between"}}>
+                <Toolbar className="AppToolbar">
+
                     <Typography variant="h6" color={"black"}>
-                        <p style={{fontWeight: "bold"}}>MY TODOLIST</p>
+                        <p className="AppTypographyP">MY TODOLIST</p>
                     </Typography>
 
                      {isLoggedIn && <Button  color="inherit" onClick={logOut}><LogoutTwoToneIcon /></Button>}

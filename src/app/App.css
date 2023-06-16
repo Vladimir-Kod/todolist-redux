@@ -25,6 +25,18 @@
 }
 */
 
-.App{
-
+.AppCircularProgress {
+    position: fixed;
+    top: 30%;
+    text-align: center;
+    width: 100%
+}
+.AppToolbar {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between
+}
+.AppTypographyP {
+    font-weight: bold
 }
