@@ -4,18 +4,23 @@ import {
     setEntityStatusAC, SetEntityStatusType,
     SetTodolistsActionType
 } from './todolists-reducer'
-import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
+import {
+    taskAPI,
+    TaskPriorities,
+    TaskStatuses,
+    TaskType,
+    UpdateTaskModelType
+} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
 import {
     RequestStatusType,
-    setErrorAC,
     setErrorType,
     setRequestStatusAC,
     setRequestStatusType
 } from "../../app/app-reducer";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import axios, {Axios, AxiosError} from "axios";
+import axios, { AxiosError } from "axios";
 
 const initialState: TasksStateType = {}
 
@@ -78,7 +83,7 @@ export const setEntityTaskStatus =(todolistId: string, taskId: string, newStatus
 // thunks
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setRequestStatusAC("loading"))
-    todolistsAPI.getTasks(todolistId)
+    taskAPI.getTasks(todolistId)
         .then((res) => {
             const tasks = res.data.items
             const action = setTasksAC(tasks, todolistId)
@@ -93,7 +98,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setRequestStatusAC("loading"))
     dispatch(setEntityTaskStatus(todolistId,taskId,"loading"))
-    todolistsAPI.deleteTask(todolistId, taskId)
+    taskAPI.deleteTask(todolistId, taskId)
         .then(res => {
             if (res.data.resultCode === ResultCode.OK) {
                 const action = removeTaskAC(taskId, todolistId)
@@ -126,7 +131,7 @@ export type ErrorsType = {
 export const addTaskTC = (title: string, todolistId: string,) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setRequestStatusAC("loading"))
     dispatch(setEntityStatusAC(todolistId, "loading"))
-    todolistsAPI.createTask(todolistId, title)
+    taskAPI.createTask(todolistId, title)
         .then(res => {
             if(res.data.resultCode === ResultCode.OK){
                 const task = res.data.data.item
@@ -170,7 +175,7 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
         dispatch(setEntityTaskStatus(todolistId,taskId,"loading"))
 
         try{
-            const res = await todolistsAPI.updateTask(todolistId, taskId, apiModel)
+            const res = await taskAPI.updateTask(todolistId, taskId, apiModel)
             if(res.data.resultCode === ResultCode.OK){
                 const action = updateTaskAC(taskId, domainModel, todolistId)
                 dispatch(action)
@@ -219,10 +224,6 @@ export type setEntityTaskStatusType = ReturnType<typeof setEntityTaskStatus>
 
 export type TasksStateType = {
     [key: string]: Array<TaskTypeWithEntityTaskStatusType>
-}
-
-export type EntityStatusTaskType = {
-    entityTaskStatus: RequestStatusType
 }
 
 export type TaskTypeWithEntityTaskStatusType = TaskType & { entityTaskStatus: RequestStatusType }
