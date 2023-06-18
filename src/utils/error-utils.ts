@@ -1,12 +1,6 @@
-import {
-    // setAppErrorAC,
-    // SetAppErrorActionType,
-    // setAppStatusAC,
-    // SetAppStatusActionType,
-    setErrorAC, setErrorType, setRequestStatusAC, setRequestStatusType
-} from '../app/app-reducer'
-import { Dispatch } from 'redux'
-import { ResponseType } from '../api/todolists-api'
+import {setErrorAC, setErrorType, setRequestStatusAC, setRequestStatusType} from '../app/app-reducer'
+import {Dispatch} from 'redux'
+import {ResponseType} from '../api/todolists-api'
 
 // generic function
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ErrorUtilsDispatchType) => {

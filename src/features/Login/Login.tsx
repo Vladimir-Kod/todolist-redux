@@ -12,7 +12,7 @@ import {useAppDispatch, useAppSelector} from "../../app/store";
 import {loginTC} from "./Login-auth-reducer";
 import {Navigate} from "react-router-dom";
 import Paper from '@mui/material/Paper';
-
+import styles from "./../TodolistsList/TodolistsList.module.css"
 
 type FormikErrorType = {
     email?: string
@@ -51,9 +51,8 @@ export const Login = () => {
         onSubmit: values => {
             dispatch(loginTC(values))
             formik.resetForm()
-
             // formik.resetForm(  {values: {password: 'Custom initial values', email:'', rememberMe: true}})
-        },
+        }
     })
 
     if (isLoggedIN) {
@@ -63,8 +62,7 @@ export const Login = () => {
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
-            <Paper elevation={12}
-                   style={{padding: '15px',borderRadius: "15px", border: "4px solid", borderColor: "coral",margin: "50px"}}>
+            <Paper elevation={12} className={styles.TodolistPaper}>
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
@@ -81,23 +79,22 @@ export const Login = () => {
                         <TextField
                             label="Email"
                             margin="normal"
-                            // onChange={formik.handleChange}
-                            // name="email"
-                            // onBlur={formik.handleBlur}
+                            // onChange={formik.handleChange} содержит getFieldProps
+                            // name="email"                   содержит getFieldProps
+                            // onBlur={formik.handleBlur}     содержит getFieldProps
                             {...formik.getFieldProps ('email' )}
                         />
-                        {formik.touched.email && formik.errors.email && <div style={{color: "red"}}>{formik.errors.email}</div>}
+                        {formik.touched.email && formik.errors.email && <div style={{color: "red"}}>
+                            {formik.errors.email}</div>}
 
                         <TextField
                             type="password"
                             label="Password"
                             margin="normal"
-                            // onChange={formik.handleChange}
-                            // name="password"
-                            // onBlur={formik.handleBlur}
                             {...formik.getFieldProps ('password' )}
                         />
-                        {formik.touched.password && formik.errors.password && <div style={{color: "red"}}>{formik.errors.password}</div>}
+                        {formik.touched.password && formik.errors.password && <div style={{color: "red"}}>
+                            {formik.errors.password}</div>}
 
                         <FormControlLabel
                             label={'Remember me'}

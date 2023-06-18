@@ -1,6 +1,6 @@
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
-const initialState = {
+export const initialState = {
     isInitialized: false,
     status: 'idle' as RequestStatusType,
     error: null as null | string,
