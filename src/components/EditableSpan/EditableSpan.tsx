@@ -1,36 +1,30 @@
-import React, { ChangeEvent, useState } from 'react';
+import React from 'react';
 import TextField from '@mui/material/TextField';
-
+import useEditableSpan from "./hook/useEditableSpan";
 
 type EditableSpanPropsType = {
     value: string
     onChange: (newValue: string) => void
     disabled: boolean
     status?: number
-
 }
 
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
-    console.log('EditableSpan called');
-    let [editMode, setEditMode] = useState(false);
-    let [title, setTitle] = useState(props.value);
+    console.log('EditableSpan called')
 
-    const activateEditMode = () => {
-        setEditMode(true);
-        setTitle(props.value);
-    }
-    const activateViewMode = () => {
-        setEditMode(false);
-        props.onChange(title);
-    }
-    const changeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
-    }
-
-    const opacity = props.status === 2 ? 0.4 : undefined
-    const lineThrough = props.status === 2 ? "line-through" : undefined
+    const {
+        editMode,
+        title,
+        changeTitle,
+        activateViewMode,
+        activateEditMode,
+        opacity,
+        lineThrough
+    } = useEditableSpan(props.value, props.onChange, props.status)
 
     return editMode
-        ? <TextField disabled={props.disabled} value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode} size={"small"}/>
-        : <span  style={{padding: "5px", opacity: opacity, textDecoration:lineThrough}} onDoubleClick={activateEditMode}>{props.value}</span>
+        ? <TextField disabled={props.disabled} value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode}
+                     size={"small"}/>
+        : <span style={{padding: "5px", opacity: opacity, textDecoration: lineThrough}}
+                onDoubleClick={activateEditMode}>{props.value}</span>
 });
