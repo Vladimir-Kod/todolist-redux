@@ -191,7 +191,6 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
                 } else {
                     const error = (e as Error).message
                 }
-
             }
     }
 

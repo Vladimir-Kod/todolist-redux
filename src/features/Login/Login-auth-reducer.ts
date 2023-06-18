@@ -1,4 +1,4 @@
-import {authAPI, AuthRequestType, TaskType} from "../../api/todolists-api";
+import {authAPI, AuthRequestType} from "../../api/todolists-api";
 import {Dispatch} from "redux";
 import {ResultCode} from "../TodolistsList/tasks-reducer";
 import {
@@ -16,9 +16,6 @@ const initialState = {
     isLoggedIn: false
 }
 
-// export type ErrorType = {
-//     error: null | string
-// }
 type InitialStateType = {
     isLoggedIn : boolean
 }
@@ -38,11 +35,6 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) => {
         isLoggedIn: isLoggedIn
     } as const
 }
-
-
-
-
-
 
 export type setUserIdACType = ReturnType<typeof setIsLoggedInAC>
 type ActionsType = setUserIdACType | setRequestStatusType | setIsInitializedACType | ClearDataType
